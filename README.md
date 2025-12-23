@@ -54,6 +54,23 @@ The database tables and collections are **automatically created** when the conta
 ### **If you need to re-run or manually apply the configuration:**
 Run these commands in your terminal:
 
+## 7. Backup & Recovery
+We provide PowerShell scripts in the `scripts/` folder to manage data backups.
+
+### **Backup**
+Creates a timestamped backup of both Postgres and MongoDB in the `./backups` folder.
+```powershell
+./scripts/backup.ps1
+```
+
+### **Restore**
+Restores database from a specific timestamp (WARNING: Overwrites current data).
+```powershell
+./scripts/restore.ps1 -Timestamp "20251223_120000"
+```
+
+---
+
 **PostgreSQL (Metadata)**
 ```bash
 # 1. Create Fields
