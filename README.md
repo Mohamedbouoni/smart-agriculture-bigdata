@@ -18,11 +18,37 @@ Ensure you have the following installed:
 We use standard Docker images, so there is no need to manually build anything. Run this single command to download the images (HDFS, Mongo, Postgres) and start the containers:
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
-*Note: The first time you run this, it may take 5-10 minutes to download the large Hadoop images.*
+*Note: The `--build` flag ensures that if we add custom Dockerfiles later (e.g., for Spark or Gateway), they are built. For now, it pulls the standard images.*
 
-## 4. Configuration (Schemas)
+## 4. Architecture & Docker Images
+We use the following official and stable images:
+*   **Hadoop NameNode**: `bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8`
+*   **Hadoop DataNodes**: `bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8`
+*   **MongoDB**: `mongo:latest`
+*   **PostgreSQL**: `postgres:13`
+
+## 5. Generating Data (Necessary Step)
+To test the system, you need data. We have a script to generate synthetic sensor readings and disease logs.
+
+### Requirements
+*   Python 3.x
+*   `pymongo` library
+
+### Run the Generator
+```bash
+# 1. Install dependency
+pip install pymongo
+
+# 2. Run the script
+python scripts/generate_data.py
+```
+This will:
+*   Generate `sensor_readings.json` and `disease_logs.json` in `./data_simulation/`.
+*   Directly insert sample data into **MongoDB** (collection: `sensor_data`).
+
+## 6. Configuration (Schemas)
 The database tables and collections are **automatically created** when the containers start for the first time, using the scripts in the `./scripts/` folder.
 
 ### **If you need to re-run or manually apply the configuration:**
